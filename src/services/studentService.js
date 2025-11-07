@@ -1,141 +1,125 @@
-import uuid from "../generation.js";
-import Database from "../config/database.js";
-import StudentRepository from "../repositorys/studentRepository.js";
-
+//import Database from "../config/datatbase.js";
+import uuid from "../generateur.js";
+import StudentRepostory from "../repositories/studentsRepostory.js";
 
 export default class StudentService {
-  students = [
-    {
-      id: 1000,
-      firstname: "Ali",
-      lastname: "Afi",
-      sexe: "F",
-      birth_day: "01/01/2002",
-    },
-  ];
+  // students = [
+  //   {
+  //     id: 1,
+  //     firstname: "JOKOI",
+  //     lastname: "Tolkoi",
+  //     sexe: "M",
+  //     birth_day: "02/05/2005",
+  //   },
+  //   {
+  //     id: 2,
+  //     firstname: "Jokloi",
+  //     lastname: "Toak",
+  //     sexe: "F",
+  //     birth_day: "05/05/2006",
+  //   },
+  // ];
 
-  studentRepository;
+  // uuidGen;
 
-  uuidGen;
+  // constructor() {
+  //   this.uuidGen = uuid(1000);
+  // }
 
+  studRepos;
   constructor() {
-    this.uuidGen = uuid(1000);
-    this.studentRepository = new StudentRepository();
+    this.studRepos = new StudentRepostory();
   }
 
   async getAll() {
-    /*
-    const db = await Database.getDatabaseInsatance();
-    return await db.connection.all("SELECT * FROM students");
-    */
-
-    this.studentRepository.findAll();
-
+    return this.studRepos.findAll();
   }
+
+  // async getAll() {
+  //   const db = await Database.getDataBaseInstance();
+  //   return await db.connection.all("SELECT * FROM students");
+  // }
 
   async get(id) {
-    /*
-    const db = await Database.getDatabaseInsatance();
-    return await db.connection.get(
-      "SELECT * FROM students WHERE id = :student_id",
-      { ":student_id": id }
-    );
-    */
-
-    return this.studentRepository.find(id);
+    return this.studRepos.findById(id);
   }
 
-  async create(student_data) {
-    /*const db = await Database.getDatabaseInsatance();
-    const { firstname, lastname, sexe, birth_day } = student_data;
-    const insert_sql = `
-        INSERT INTO students(firstname, lastname, sexe, birth_day)
-        VALUES(:firstname, :lastname, :sexe, :birth_day);
-    `;
-    const { lastID } = await db.connection.run(insert_sql, {
-      ":firstname": firstname,
-      ":lastname": lastname,
-      ":sexe": sexe,
-      ":birth_day": birth_day,
-    });
-    return lastID;*/
+  //   create(student) {
+  //     const newStudent = {
+  //       id: this.uuidGen.next().value,
+  //       firstname: student.firstname !== undefined ? student.firstname : "",
+  //       lastname: student.lastname !== undefined ? student.lastname : "",
+  //       sexe: student.sexe !== undefined ? student.sexe : "",
+  //       birth_day: student.birth_day !== undefined ? student.birth_day : "",
+  //     };
+  //     this.students.push(newStudent);
+  //     return newStudent;
+  //   }
 
-    this.studentRepository.save(student_data);
-    return await this.get(student_data)
-  }
+  // async create(student_data) {
+  //   // student_data.id = this.uuidGen.next().value;
+  //   // this.students.push(student_data);
+  //   // return student_data;
+  //   const { firstname, lastname, sexe, birth_day } = student_data;
+  //   const db = await Database.getDataBaseInstance();
+  //   const req = `INSERT INTO students (firstname, lastname, sexe, birth_day)
+  //               VALUES (':firstname',':lastname',':sexe',':birth_day');
+  //   `;
 
-  async find(id) {
-    const db = await Database.getDatabaseInsatance();
-    return await db.connection.get(
-      "SELECT * FROM students WHERE id = :student_id;",
-      {
-        ":student_id": id,
-      }
-    );
+  //   const { last_id } = await db.connection.run(req, {
+  //     ":firstname": firstname,
+  //     ":lastname": lastname,
+  //     ":sexe": sexe,
+  //     ":birth_day": birth_day,
+  //   });
+
+  //   return this.get(last_id);
+  // }
+
+  //   update(id, student) {
+  //     let updatedStudent;
+  //     this.students.forEach((e, index) => {
+  //       if (e.id == id) {
+  //         updatedStudent = {
+  //           id: id,
+  //           firstname:
+  //             student.firstname !== undefined ? student.firstname : e.firstname,
+  //           lastname:
+  //             student.lastname !== undefined ? student.lastname : e.lastname,
+  //           sexe: student.sexe !== undefined ? student.sexe : e.sexe,
+  //           birth_day:
+  //             student.birth_day !== undefined ? student.birth_day : e.birth_day,
+  //         };
+  //         this.students[index] = updatedStudent;
+  //       }
+  //     });
+  //     return updatedStudent;
+  //   }
+
+  async create(student){
+    return this.studRepos.save(student);
   }
 
   async update(id, student_data) {
-    /*
-    const db = await Database.getDatabaseInsatance();
-
-    const student = await this.find(id);
-    if (!student) {
-      throw new Error(`Aucun étudiant trouvé avec l'id ${id}`);
-    }
-
-    const { firstname, lastname, sexe, birth_day } = student_data;
-
-    const update_sql = `
-      UPDATE students
-      SET firstname = :firstname,
-          lastname = :lastname,
-          sexe = :sexe,
-          birth_day = :birth_day
-      WHERE id = :id;
-    `;
-
-    const result = await db.connection.run(update_sql, {
-      ":firstname": firstname,
-      ":lastname": lastname,
-      ":sexe": sexe,
-      ":birth_day": birth_day,
-      ":id": id,
-    });
-
-    return result.changes > 0
-      ? await this.find(id)
-      : { message: "Aucune modification effectuée" };
+    return this.studRepos.update(id, student_data);
   }
+
+  //   delete(id) {
+  //     let student;
+  //     this.students.forEach((e) => {
+  //       if (e.id == id) {
+  //         student = e;
+  //       }
+  //     });
+
+  //     if (student != undefined) {
+  //       this.students = this.students.filter((e) => e.id != id);
+  //       return true;
+  //     }
+  //     return false;
+  //   }
 
   async delete(id) {
-    const db = await Database.getDatabaseInsatance();
-
-    const student = await this.find(id);
-    if (!student) {
-      throw new Error(`Aucun étudiant trouvé avec l'id ${id}`);
-    }
-
-    const delete_sql = `
-      DELETE FROM students WHERE id = :id;
-    `;
-
-    const result = await db.connection.run(delete_sql, { ":id": id });
-
-    return result.changes > 0
-      ? { message: "Étudiant supprimé avec succès", deleted: student }
-      : { message: "Aucune suppression effectuée" };
+    return this.studRepos.delete(id);
   }
-      */
-
-  this.studentRepository.update(id,student_data);
-  return await this.get(student_data)
-}
-
-
-
-
-
-
-
-
 }

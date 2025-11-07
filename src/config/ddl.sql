@@ -1,9 +1,8 @@
-DROP TABLE IF EXISTS students;
-
-CREATE TABLE students (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    firstname TEXT,
-    lastname TEXT,
-    sexe TEXT CHECK(sexe IN ('M', 'F')),
-    birth_day DATE
+CREATE TABLE IF NOT EXISTS students (
+        id INTEGER PRIMARY KEY autoincrement, 
+        firstname TEXT, 
+        lastname TEXT, 
+        sexe TEXT, 
+        birth_day DATE, 
+        check(sexe in('M','F'))
 );
