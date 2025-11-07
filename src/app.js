@@ -1,75 +1,82 @@
 import http from "node:http";
-import studentController from "./controllers/studentsController.js";
-import { strict } from "node:assert";
-import dotenv from "dotenv";
-import Database from "./config/datatbase.js";
-dotenv.config();
-// import HTTP_STATUS_CODE from "";
+import fs from "node:fs"
+import StudentsController from "./controllers/StudentController.js";
+import { Database } from "./config/database.js";
 
-/**
- * Exo:
- *      Faire les uri pour afficher les messages.
- * GET /students -> Students list
- * GET /student/:id -> Student details
- * POST /students -> Students create
- * PUT | PATCH /students:id -> Students updated
- * DELETE /students:id -> Students deleted
- */
-const studentControllers = new studentController();
-//const db_path = "/home/christian/Documents/Cours_L3/Semestre5/Cours_NodeJS/gestion-note/db.sqlite"
-const db = await Database.getDataBaseInstance();
-console.log(db);
 
-//const db.openDb(db_path);
+const db_path = "/home/phanie/Documents/adjebadja/GestionNotes/src/db.sqlite";
+const db=  await Database.getDatabaseInstance();
+//console.log(db);
 
-const server = http.createServer((req, res) => {
-  const methode = req.method;
-  const url = new URL(req.url, `http://${req.headers.host}`);
-  const endpoint = methode + ":" + url.pathname;
+    /**
+     * GET /students -> students list
+     * POST /student/:id -> students created
+     * PUT /student -> students updated
+     * DELETE /student/:id -> student deleted
+     */
+const studentsController=new StudentsController();
 
-  //console.log(req.headers);
+const server=http.createServer(async (req,res)=>{
+    const method=req.method;
+    const url=new URL(req.url,`http://${req.headers.host}`);
+    
+    
+    //console.log(url);
+    
+    
+    
+    const endpoint=method+":"+url.pathname;
+    
+    res.setHeader('content-Type','application/json');
+    //console.log(method);
+    //console.log(endpoint);
+    
 
-  console.log(`${methode} --> ${endpoint}`);
-  res.setHeader("content-Type", "application/json");
+    switch (endpoint) {
+        case 'GET:/students':
+            console.log("Liste des etudiants");
+            studentsController.read(req,res);
+            break;
 
-  switch (endpoint) {
-    case "GET:/students":
-      studentControllers.read(req, res);
-      //console.log("Liste des eleves");
-      break;
 
-    case "GET:/student":
-      studentControllers.get(req, res);
-      break;
-
-    case "POST:/students":
-      studentControllers.create(req, res);
-      //console.log("creation d'un eleve");
-      //res.end();
-      break;
-
-    case "PUT:/student":
-      studentControllers.update(req, res);
-      break;
-
-    case "DELETE:/student":
-      studentControllers.delete(req, res);
-      console.log("Supression d'un eleve");
-      //res.end();
-      break;
-
-    default:
-      //console.log('404 --page not found')
-      res.writeHead(404);
-      res.end(
-        JSON.stringify({
-          message: "Page not found!",
-        })
-      );
-      break;
-  }
+        case 'GET:/student':
+            console.log("Information d'un etudiant");
+            studentsController.get(req,res);
+            break;
+            
+            
+        case 'POST:/students':
+            console.log("Création d'un nouvel etudiant");
+            studentsController.create(req,res);
+            break;
+            
+            
+        case 'PUT:/student':
+            console.log("Modification d'un etudiant");
+            studentsController.update(req,res);
+            break;   
+            
+            
+        case 'DELETE:/student':
+            console.log("Suppression d'un etudiant");
+            
+            studentsController.delete(req,res);
+            break;       
+    
+        default:
+            res.writeHead(404)
+            res.end(JSON.stringify({
+                "mesage":"Page not found !"
+            }));
+            break;
+    }
+  
+    
+   
 });
+//console.log(process.env.PORT);
 
-server.listen(process.config.PORT || 3000, () => {
-  console.log("Demarrage du serveur...");
-});
+server.listen(process.env.PORT || 3000,()=>{
+    console.log("server start");
+    
+})
