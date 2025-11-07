@@ -3,40 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeune Développeur Web - Adjebadja</title>
+    <title>Carte de visite - Adjebadja</title>
     <style>
-
         body {
             font-family: 'Poppins', Arial, sans-serif;
             background: linear-gradient(135deg, #1e90ff, #6a5acd);
             color: #fff;
-            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Conteneur principal avec Grid */
+        .carte {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 20px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 600px;
+        }
+
+        /* Image de profil */
+        .photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #fff;
+        }
+
+        /* Contenu texte à droite */
+        .infos {
+            text-align: left;
         }
 
         h1 {
-            font-size: 3em;
-            margin-bottom: 0.5em;
-            letter-spacing: 2px;
+            font-size: 2em;
+            margin: 0 0 10px 0;
         }
 
         p {
-            font-size: 1.2em;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
-            border-radius: 10px;
-            display: inline-block;
+            margin: 5px 0;
+            font-size: 1.1em;
         }
 
-        h1:hover {
+        .role {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .contact {
+            margin-top: 10px;
+        }
+
+        .contact a {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 15px;
+            font-size: 1.2em;
+        }
+
+        .contact a:hover {
             color: #ffd700;
             transition: 0.3s;
         }
     </style>
 </head>
 <body>
-    <div>
-        <h1>Bonjour, je suis Adjebadja </h1>
-        <p>Jeune développeur web .</p>
+    <div class="carte">
+        <img src="0.jpg" alt="Photo de profil" class="photo">
+        <div class="infos">
+            <h1>Adjebadja</h1>
+            <p class="role">Jeune Développeur Web</p>
+            <p>Passionné par le design moderne et les technologies web.</p>
+            <div class="contact">
+                <a href="mailto:adjebadjaa@gmail.com">📧 Email</a>
+                <a href="#">💼 Portfolio</a>
+                <a href="#">📱 +228 70020635</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>
